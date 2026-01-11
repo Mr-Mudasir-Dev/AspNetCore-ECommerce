@@ -1,0 +1,82 @@
+﻿@model Admin
+
+<div class="container-fluid px-4 mt-5 mb-5">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Update Profile</h5>
+        </div>
+
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+
+                <!-- Profile Image -->
+                <div class="text-center mb-4">
+                    <img src="~/admin/admin_profile_image/@Model.Admin_Image"
+                         class="img-thumbnail shadow"
+                         style="height:150px; width:150px; object-fit:cover; border-radius:50%;"
+                         alt="Profile Image" />
+                </div>
+
+                <!-- Name & Phone -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Name</label>
+                        <input name="Admin_Name" value="@Model.Admin_Name" class="form-control" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Phone</label>
+                        <input name="Admin_Phone" value="@Model.Admin_Phone" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Email & Image -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input name="Admin_Email" type="email" value="@Model.Admin_Email" class="form-control" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Change Profile Image</label>
+                        <input name="Image" type="file" class="form-control" />
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="border rounded p-3 mt-3">
+                    <h6 class="fw-bold mb-2">Change Password</h6>
+
+                    <p class="text-muted mb-3">
+                        If you want to change your password, please enter your current password first.
+                        This helps us verify that you are the account owner.
+                    </p>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Current Password</label>
+                            <input type="password" name="Crunt_Pass" class="form-control" />
+                            <span class="text-danger">@TempData["Success"] </span>
+                            <span class="text-danger">@TempData["Crunt_Pass"] </span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">New Password</label>
+                            <input type="password" name="New_Pass" class="form-control" />
+                            <span class="text-danger">@TempData["NewPass=oldpass"] </span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Buttons -->
+                <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-dark">Update</button>
+                    <a class="btn btn-secondary" asp-controller="Admin" asp-action="Index">Back</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
