@@ -24,7 +24,6 @@ namespace E_Commerce.Controllers
         {
             if (HttpContext.Session.GetInt32("Admin_id") != null)
             {
-                ViewBag.Admin_id = HttpContext.Session.GetInt32("Admin_id");
                 return View();
             }
             else
@@ -65,7 +64,7 @@ namespace E_Commerce.Controllers
             return View();
         }
 
-        // Profile Page
+        // Profile Page <-----End Line 141----->
         public IActionResult Profile(int id)
         {
             if (HttpContext.Session.GetInt32("Admin_id") != null)
@@ -82,8 +81,10 @@ namespace E_Commerce.Controllers
         [HttpPost]
         public IActionResult Profile(Admin admin, IFormFile Image, int id, string Crunt_Pass, string New_Pass)
         {
+            // Fatch Old Data Login Admin
             var olddata = db.Admins.AsNoTracking().FirstOrDefault(a => a.Admin_Id == id);
 
+            // Image Update
             if (Image != null && Image.Length > 0)
             { 
                 var filename = Path.GetFileName(Image.FileName);
@@ -92,6 +93,7 @@ namespace E_Commerce.Controllers
                 {
                     Image.CopyTo(fs);
                     admin.Admin_Image = filename;
+                    TempData["Image"] = "Image Has Been Successfully Updated";
                 }
             }else
             {
@@ -101,8 +103,8 @@ namespace E_Commerce.Controllers
                 }
             }
 
-
-            if(!string.IsNullOrEmpty(New_Pass))
+            // Password Update
+            if (!string.IsNullOrEmpty(New_Pass))
             {
                 if (!string.IsNullOrEmpty(Crunt_Pass) && Crunt_Pass == olddata.Admin_Password)
                 {
@@ -128,12 +130,17 @@ namespace E_Commerce.Controllers
                 admin.Admin_Password = olddata.Admin_Password;
             }
 
+            // Nmae,Email,Phone Update
+            if (admin.Admin_Name != olddata.Admin_Name || admin.Admin_Email != olddata.Admin_Email || admin.Admin_Phone != olddata.Admin_Phone)
+            {
+                TempData["Profile"] = "Profile Successfully Updated";
+            }
 
             admin.Admin_Id = id;
             db.Admins.Update(admin);
             db.SaveChanges();
-            TempData["msg"] = "Profile updated successfully";
             return RedirectToAction("Profile");
         }
+        // Profile Page <-----Starte Line 67----->
     }
 }
