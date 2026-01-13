@@ -130,7 +130,7 @@ namespace E_Commerce.Controllers
                 admin.Admin_Password = olddata.Admin_Password;
             }
 
-            // Nmae,Email,Phone Update
+            // Name,Email,Phone Update
             if (admin.Admin_Name != olddata.Admin_Name || admin.Admin_Email != olddata.Admin_Email || admin.Admin_Phone != olddata.Admin_Phone)
             {
                 TempData["Profile"] = "Profile Successfully Updated";
