@@ -1,6 +1,8 @@
-﻿using E_Commerce.Models;
+﻿using E_Commerce.Migrations;
+using E_Commerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace E_Commerce.Controllers
 {
@@ -142,5 +144,39 @@ namespace E_Commerce.Controllers
             return RedirectToAction("Profile");
         }
         // Profile Page <-----Starte Line 67----->
+
+
+        // Category <-----End Line ----->
+
+        public IActionResult Create_Category()
+        {
+            return View(); 
+        }
+        [HttpPost]
+        public IActionResult Create_Category(Category cat ,string CategoryName)
+        {
+            if (string.IsNullOrEmpty(CategoryName))
+            {
+                TempData["catnull"] = "Category name is required";
+                return RedirectToAction("Create_Category");
+            }
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(CategoryName, @"^[A-Za-z]+$"))
+            {
+                TempData["caterror"] = "Category name must contain only letters.";
+                return RedirectToAction("Create_Category");
+            }
+            else
+            {
+                cat.Name = CategoryName;
+                db.Categorys.Add(cat);
+                db.SaveChanges();
+                TempData["Success"] = "Your category has been added successfully";
+                return RedirectToAction("Create_Category");
+            }
+        }
+
+
+        // Category <-----Start Line 147 ----->
     }
 }

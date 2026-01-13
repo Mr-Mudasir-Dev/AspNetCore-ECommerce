@@ -9,5 +9,8 @@ namespace E_Commerce.Models
         // Admin Table Add In Database 
         public DbSet <Admin> Admins { get; set; }
 
+        // Categorys Table Add In Database 
+        public DbSet <Category> Categorys { get; set; }
+
     }
 }
