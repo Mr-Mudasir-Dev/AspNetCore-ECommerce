@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Edit Category";
+}
+@model Category
+
+
+<div class="container mt-4 mb-3">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Edit @Model.Name Category</h5>
+        </div>
+
+        <div class="card-body">
+            @await Html.PartialAsync("_Category-Edit")
+        </div>
+    </div>
+</div>

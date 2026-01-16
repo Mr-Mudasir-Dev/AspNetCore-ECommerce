@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Category Show";
+}
+@model List<Category>
+
+
+<div class="container-fluid mt-4">
+    @await Html.PartialAsync("_Category-All-Show-Msg")
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">All Category Record</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped table-hover text-center align-middle w-100">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Category Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var c in Model)
+                    {
+                        <tr>
+                            <td>@c.Name</td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" asp-controller="Admin" asp-action="Category_Edit" asp-route-id="@c.Id">Edit</a>
+                                <a class="btn btn-sm btn-danger" asp-controller="Admin" asp-action="Category_Delete_Permission" asp-route-id="@c.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

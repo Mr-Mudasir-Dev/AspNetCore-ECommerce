@@ -58,7 +58,7 @@ namespace E_Commerce.Controllers
         // Admin Logout 
         public IActionResult Logout()
         {
-            if(HttpContext.Session.GetInt32("Admin_id") != null)
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
             {
                 HttpContext.Session.Remove("Admin_id");
                 return RedirectToAction("Login");
@@ -66,7 +66,7 @@ namespace E_Commerce.Controllers
             return View();
         }
 
-        // Profile Page <-----End Line 141----->
+        // Profile Page    <-------- End Line 141 -------->
         public IActionResult Profile(int id)
         {
             if (HttpContext.Session.GetInt32("Admin_id") != null)
@@ -78,7 +78,7 @@ namespace E_Commerce.Controllers
             {
                 return RedirectToAction("Login");
             }
-            
+
         }
         [HttpPost]
         public IActionResult Profile(Admin admin, IFormFile Image, int id, string Crunt_Pass, string New_Pass)
@@ -88,18 +88,18 @@ namespace E_Commerce.Controllers
 
             // Image Update
             if (Image != null && Image.Length > 0)
-            { 
+            {
                 var filename = Path.GetFileName(Image.FileName);
                 var filepath = Path.Combine(env.WebRootPath, "admin/admin_profile_image", filename);
-                using(var fs = new FileStream(filepath, FileMode.Create))
+                using (var fs = new FileStream(filepath, FileMode.Create))
                 {
                     Image.CopyTo(fs);
                     admin.Admin_Image = filename;
                     TempData["Image"] = "Image Has Been Successfully Updated";
                 }
-            }else
+            } else
             {
-                if(olddata.Admin_Image != null)
+                if (olddata.Admin_Image != null)
                 {
                     admin.Admin_Image = olddata.Admin_Image;
                 }
@@ -110,7 +110,7 @@ namespace E_Commerce.Controllers
             {
                 if (!string.IsNullOrEmpty(Crunt_Pass) && Crunt_Pass == olddata.Admin_Password)
                 {
-                    if(New_Pass != olddata.Admin_Password)
+                    if (New_Pass != olddata.Admin_Password)
                     {
                         admin.Admin_Password = New_Pass;
                         TempData["Success"] = "Your password has been successfully updated";
@@ -143,17 +143,31 @@ namespace E_Commerce.Controllers
             db.SaveChanges();
             return RedirectToAction("Profile");
         }
-        // Profile Page <-----Starte Line 67----->
+        // Profile Page     <-------- Start Line 67 -------->
 
 
-        // Category <-----End Line ----->
 
+
+
+
+        // Category   <-------- End Line 253 -------->
+
+
+        //Category All Record Show Page
+        public IActionResult Category_All_Show()
+        {
+            var category = db.Categorys.ToList();
+            return View(category);
+        }
+
+
+        //Category Create Page
         public IActionResult Create_Category()
         {
-            return View(); 
+            return View();
         }
         [HttpPost]
-        public IActionResult Create_Category(Category cat ,string CategoryName)
+        public IActionResult Create_Category(Category cat, string CategoryName)
         {
             if (string.IsNullOrEmpty(CategoryName))
             {
@@ -171,12 +185,73 @@ namespace E_Commerce.Controllers
                 cat.Name = CategoryName;
                 db.Categorys.Add(cat);
                 db.SaveChanges();
-                TempData["Success"] = "Your category has been added successfully";
-                return RedirectToAction("Create_Category");
+                TempData["Create-Success"] = "Your Category has been added successfully";
+                return RedirectToAction("Category_All_Show");
             }
         }
 
 
-        // Category <-----Start Line 147 ----->
+        //Category Edit Page
+        public IActionResult Category_Edit(int id)
+        {
+            var edit = db.Categorys.FirstOrDefault(c => c.Id == id);
+            return View(edit);
+        }
+        [HttpPost]
+        public IActionResult Category_Edit(Category cat, string CategoryName, int id)
+        {
+            var old = db.Categorys.AsNoTracking().FirstOrDefault(c => c.Id == id);
+
+
+            if (string.IsNullOrEmpty(CategoryName))
+            {
+                TempData["catnull"] = "Category name is required";
+                return RedirectToAction("Category_Edit");
+            }
+
+            if (CategoryName == old.Name)
+            {
+                TempData["cat-old"] = "Your Category Name As Old If You No Need To Edit Go Back";
+                return RedirectToAction("Category_Edit");
+            }
+
+            if (!Regex.IsMatch(CategoryName, @"^[A-Za-z]+$"))
+            {
+                TempData["caterror"] = "Category name must contain only letters.";
+                return RedirectToAction("Category_Edit");
+            }
+            else
+            {
+                cat.Name = CategoryName;
+                db.Categorys.Update(cat);
+                db.SaveChanges();
+                TempData["Edit-Success"] = "Your Category " + cat.Name + " has been Edit successfully";
+                return RedirectToAction("Category_All_Show");
+            }
+
+        }
+
+
+        //Category Delete Permission Page
+        public IActionResult Category_Delete_Permission(int id)
+        {
+            var idrecord = db.Categorys.FirstOrDefault(c => c.Id == id);
+            return View(idrecord);
+        }
+
+
+        //Category Delete Recode Where Id
+        public IActionResult Category_Delete(int id)
+        {
+            var delete = db.Categorys.Find(id);
+            db.Categorys.Remove(delete);
+            db.SaveChanges();
+            TempData["Success"] = "Category " + delete.Name + " Has Been Deleted Successfully";
+            return RedirectToAction("Category_All_Show");
+        }
+
+        // Category   <--------- Start Line 147 --------->
+
+
     }
 }

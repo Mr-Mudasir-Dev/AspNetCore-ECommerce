@@ -1,7 +1,7 @@
-﻿<form method="post">
+﻿<form method="post" asp-action="Category_Edit">
 
     <div class="border rounded p-4">
-        <h6 class="fw-bold mb-2">Add New Category</h6>
+        <h6 class="fw-bold mb-2">Edit Category</h6>
 
         <p class="text-muted mb-4">
             Category name should contain only letters (A–Z).
@@ -13,9 +13,11 @@
             <label class="form-label">Category Name</label>
             <input type="text"
                    name="CategoryName"
+                   value="@Model.Name"
                    class="form-control form-control-lg"
                    placeholder="Enter category name" />
             <span class="text-danger">@TempData["catnull"]</span>
+            <span class="text-danger">@TempData["cat-old"]</span>
             <span class="text-danger">@TempData["caterror"]</span>
         </div>
 
@@ -24,6 +26,11 @@
             <button type="submit" class="btn btn-primary btn-lg">
                 Create Category
             </button>
+            <a asp-controller="Admin"
+               asp-action="Category_All_Show"
+               class="btn btn-secondary btn-lg mt-3">
+                Back
+            </a>
         </div>
     </div>
 
