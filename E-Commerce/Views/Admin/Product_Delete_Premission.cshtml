@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Product Premission";
+}
+@model Product
+
+<div class="container-fluid mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Delete Product Confirmation</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <!-- Details -->
+                <div class="col-md-8">
+                    <h3 class="fw-bold"><strong>Product Name:</strong> @Model.Name</h3>
+                    <p><strong>ID:</strong> @Model.Id</p>
+                    <p><strong>Model:</strong> @Model.Model</p>
+
+                    <hr />
+                    <p class="text-danger fw-bold">
+                        Are you sure you want to delete this record?
+                    </p>
+
+                    <a class="btn btn-secondary"
+                       asp-controller="Admin"
+                       asp-action="Product_Index">
+                        Back
+                    </a>
+
+                    <a class="btn btn-danger"
+                       asp-controller="Admin"
+                       asp-action="Product_Delete"
+                       asp-route-id="@Model.Id">
+                        Delete
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

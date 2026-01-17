@@ -275,7 +275,8 @@ namespace E_Commerce.Controllers
             if (HttpContext.Session.GetInt32("Admin_id") != null)
             {
                 var cat = db.Categorys.ToList();
-                return View(cat);
+                ViewBag.cat = cat;
+                return View();
             }
             else
             {
@@ -284,15 +285,103 @@ namespace E_Commerce.Controllers
         }
         [HttpPost]
         public IActionResult Product_Create(Product pro, IFormFile Image)
-        {  
+        {
+
+            bool hasError = false;
+
+            // Name Validation
+            if (string.IsNullOrWhiteSpace(pro.Name))
+            {
+                TempData["Name"] = "Name is required";
+                hasError = true;
+            }else if(!Regex.IsMatch(pro.Name, @"^[A-Za-z]+$"))
+            {
+                TempData["Name-err"] = "Product name must contain only letters";
+                hasError = true;
+            }else if(pro.Name.Length <= 4)
+            {
+                TempData["Name-length"] = "Please enter a valid product name";
+                hasError = true;
+            }
+            TempData["NameValue"] = pro.Name;
+
+
+            // CategoryId Validation
+            if (pro.CategoryId == null || pro.CategoryId == 0)
+            {
+                TempData["CategoryId"] = "Category is required";
+                hasError = true;
+            }
+
+
+            // Model Validation
+            if (string.IsNullOrWhiteSpace(pro.Model))
+            {
+                TempData["Model"] = "Model is required";
+                hasError = true;
+            }else if(!Regex.IsMatch(pro.Model, @"^[A-Za-z0-9]+$"))
+            {
+                TempData["Model-err"] = "Model can contain only letters and numbers";
+                hasError = true;
+            }
+            TempData["ModelValue"] = pro.Model;
+
+
+            // Price Validation
+            if (pro.Price == null)
+            {
+                TempData["Price"] = "Price is required";
+                hasError = true;
+            }
+            TempData["PriceValue"] = pro.Price.ToString();
+
+
+            // Stock Validation
+            if (pro.Stock == null)
+            {
+                TempData["Stock"] = "Stock is required";
+                hasError = true;
+            }
+            TempData["StockValue"] = pro.Stock?.ToString();
+
+
+            // Description Validation
+            if (string.IsNullOrWhiteSpace(pro.Description))
+            {
+                TempData["Description"] = "Description is required";
+                hasError = true;
+            }
+            TempData["DescriptionValue"] = pro.Description;
+
+
+
+            if (hasError)
+            {
+                TempData["haserror"] = "Please fill all required fields";
+                return RedirectToAction("Product_Create");
+            }
+
+            TempData.Clear();
             db.Products.Add(pro);
             db.SaveChanges();
+            TempData["Success-Create"] = "Product Create Has Been Successfully!";
             return RedirectToAction("Product_Index");
         }
-
-
-
         // Product   <--------- Start Line 258 --------->
+
+        public IActionResult Product_Delete_Premission(int id)
+        {
+            var pro = db.Products.FirstOrDefault(p => p.Id == id);
+            return View(pro);
+        }
+        public IActionResult Product_Delete(int id)
+        {
+            var delete = db.Products.Find(id);
+            db.Products.Remove(delete);
+            db.SaveChanges();
+            TempData["Pruduct-Delete"] = "Product has been Drop Successfully!";
+            return RedirectToAction("Product_Index");
+        }
 
 
     }
