@@ -12,5 +12,8 @@ namespace E_Commerce.Models
         // Categorys Table Add In Database 
         public DbSet <Category> Categorys { get; set; }
 
+        // Products Table Add In Database
+        public DbSet <Product> Products { get; set; }
+
     }
 }

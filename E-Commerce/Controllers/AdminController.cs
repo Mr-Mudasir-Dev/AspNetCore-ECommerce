@@ -253,5 +253,47 @@ namespace E_Commerce.Controllers
         // Category   <--------- Start Line 147 --------->
 
 
+
+
+        // Product   <--------- End Line 147 --------->
+        public IActionResult Product_Index()
+        {
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var pro = db.Products.ToList();
+                return View(pro);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+            
+        }
+
+        public IActionResult Product_Create()
+        {
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var cat = db.Categorys.ToList();
+                return View(cat);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+        [HttpPost]
+        public IActionResult Product_Create(Product pro, IFormFile Image)
+        {  
+            db.Products.Add(pro);
+            db.SaveChanges();
+            return RedirectToAction("Product_Index");
+        }
+
+
+
+        // Product   <--------- Start Line 258 --------->
+
+
     }
 }

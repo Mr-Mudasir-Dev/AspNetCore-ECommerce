@@ -1,0 +1,103 @@
+﻿@model List<Category>
+
+    <div class="container-fluid px-5 mt-5 mb-5">
+        <div class="card shadow-lg border-0 rounded-4">
+
+            <!-- Header -->
+            <div class="card-header bg-dark text-white rounded-top-4">
+                <h4 class="mb-0">
+                    <i class="fas fa-box-open me-2"></i>Create New Product
+                </h4>
+                <p class="mb-0 small text-secondary">
+                    Fill all fields to add a new product. Make sure the category exists.
+                </p>
+            </div>
+
+
+            <!-- Body -->
+            <div class="card-body p-4 bg-light">
+
+                <form method="post" enctype="multipart/form-data">
+
+                    <!-- Category & Name -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Category</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-dark text-white"><i class="fas fa-tags"></i></span>
+                                <select name="CategoryId" class="form-select" required>
+                                    <option value="">-- Select Category --</option>
+                                    @foreach (var cat in Model)
+                                    {
+                                    <option value="@cat.Id">@cat.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <span class="text-danger">@TempData["CategoryId"]</span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Product Name</label>
+                            <input name="Name" class="form-control form-control-lg border-dark" placeholder="Enter product name" />
+                            <span class="text-danger">@TempData["Name"]</span>
+                        </div>
+                    </div>
+
+                    <!-- Description & Model -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea name="Description" class="form-control border-dark" rows="5" placeholder="Enter product description"></textarea>
+                            <span class="text-danger">@TempData["Description"]</span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Model</label>
+                            <input name="Model" class="form-control border-dark" placeholder="Enter model" />
+                            <span class="text-danger">@TempData["Model"]</span>
+                        </div>
+                    </div>
+
+                    <!-- Price & Stock -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Price (Pkr)</label>
+                            <input type="number" name="Price" class="form-control border-dark" placeholder="Enter price" />
+                            <span class="text-danger">@TempData["Price"]</span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Stock Quantity</label>
+                            <input type="number" name="Stock" class="form-control border-dark" placeholder="Enter stock quantity" />
+                            <span class="text-danger">@TempData["Stock"]</span>
+                        </div>
+                    </div>
+
+                    <!-- Image & Status -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Product Image</label>
+                            <input name="ProductImg" type="file" class="form-control border-dark" />
+                            <span class="text-danger">@TempData["ProductImg"]</span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Stock Status</label>
+                            <select name="IsActive" class="form-select border-dark" required>
+                                <option value="1" class="text-success">In Stock</option>
+                                <option value="0" class="text-danger">Out of Stock</option>
+                            </select>
+                            <span class="text-danger">@TempData["IsActive"]</span>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="submit" class="btn btn-dark btn-lg me-2"><i class="fas fa-plus-circle me-1"></i>Add Product</button>
+                        <a class="btn btn-secondary btn-lg" asp-controller="Admin" asp-action="Index"><i class="fas fa-arrow-left me-1"></i>Back</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
