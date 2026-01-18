@@ -3,6 +3,7 @@
 
 
 <form method="post" enctype="multipart/form-data" action="Product_Edit">
+    <input type="hidden" name="pId" value="@Model.Id" />
     <!-- Category & Name -->
     <div class="row mb-4">
         <div class="col-md-6 mb-3">
@@ -84,6 +85,11 @@
             {
                 <span class="text-danger">@TempData["Price"]</span>
             }
+            @if (TempData["Price-err"] != null)
+            {
+                <span class="text-danger">@TempData["Price-err"]</span>
+            }
+            
         </div>
 
         <div class="col-md-6 mb-3">
@@ -125,7 +131,7 @@
 
     <!-- Buttons -->
     <div class="d-flex justify-content-end mt-4">
-        <button type="submit" class="btn btn-dark btn-lg me-2"><i class="fas fa-plus-circle me-1"></i>Add Product</button>
+        <button type="submit" class="btn btn-dark btn-lg me-2">Update Product</button>
         <a class="btn btn-secondary btn-lg" href="@Url.Action("Product_Index", "Admin")"><i class="fas fa-arrow-left me-1"></i>Show Product</a>
     </div>
 

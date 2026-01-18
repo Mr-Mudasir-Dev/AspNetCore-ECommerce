@@ -385,7 +385,7 @@ namespace E_Commerce.Controllers
             TempData.Clear();
             db.Products.Add(pro);
             db.SaveChanges();
-            TempData["Success-Create"] = "Product Create Has Been Successfully!";
+            TempData["Success"] =  pro.Name + " Product Create Has Been Successfully!";
             return RedirectToAction("Product_Index");
         }
 
@@ -396,12 +396,112 @@ namespace E_Commerce.Controllers
             return View(oldPro);
         }
         [HttpPost]
-        public IActionResult Product_Edit(Product newpro)
+        public IActionResult Product_Edit(Product pro, int pId, IFormFile Image)
         {
-            db.Products.Update(newpro);
+            var old = db.Products.AsNoTracking().FirstOrDefault(p => p.Id == pId);
+
+            bool hasError = false;
+            bool isCorrect = false;
+           
+
+            // Name Validation
+            if (string.IsNullOrWhiteSpace(pro.Name))
+            {
+                TempData["Name"] = "Name is required";
+                hasError = true;
+            }
+            else if (!Regex.IsMatch(pro.Name, @"^[A-Za-z]+$"))
+            {
+                TempData["Name-err"] = "Product name must contain only letters";
+                hasError = true;
+            }
+            else if (pro.Name.Length <= 4)
+            {
+                TempData["Name-length"] = "Please enter a valid product name";
+                hasError = true;
+            }
+
+
+            // CategoryId Validation
+            if (pro.CategoryId == null || pro.CategoryId == 0)
+            {
+                TempData["CategoryId-err"] = "Category is required";
+                hasError = true;
+            }
+
+
+            // Model Validation
+            if (string.IsNullOrWhiteSpace(pro.Model))
+            {
+                TempData["Model"] = "Model is required";
+                hasError = true;
+            }
+            else if (!Regex.IsMatch(pro.Model, @"^[A-Za-z0-9]+$"))
+            {
+                TempData["Model-err"] = "Model can contain only letters and numbers";
+                hasError = true;
+            }
+
+
+            // Price Validation
+            if (pro.Price == null)
+            {
+                TempData["Price"] = "Price is required";
+                hasError = true;
+            }else if(pro.Price <= 8)
+            {
+                TempData["Price-err"] = "Enter a valid Price";
+                hasError = true;
+            }
+
+
+            // Stock Validation
+            if (pro.Stock == null)
+            {
+                TempData["Stock"] = "Stock is required";
+                hasError = true;
+            }
+
+
+            // Description Validation
+            if (string.IsNullOrWhiteSpace(pro.Description))
+            {
+                TempData["Description"] = "Description is required";
+                hasError = true;
+            }
+
+
+            if (hasError)
+            {
+                TempData["haserror"] = "Please fill all required fields";
+                return RedirectToAction("Product_Edit", new {id = pId});
+            }
+
+            if (Image != null && Image.Length > 0)
+            {
+                var filename = Path.GetFileName(Image.FileName);
+                var filepath = Path.Combine(env.WebRootPath, "Product-Image", filename);
+                using (var fs = new FileStream(filepath, FileMode.Create))
+                {
+                    Image.CopyTo(fs);
+                    pro.ProductImg = filename;
+                }
+
+            }
+            else
+            {
+                if(old.ProductImg != null)
+                {
+                    pro.ProductImg = old.ProductImg;
+                }
+            }
+
+            TempData.Clear();
+            pro.Id = pId;
+            db.Products.Update(pro);
             db.SaveChanges();
-            TempData["Success-Create"] = "Product Update Has Been Successfully!";
-            return RedirectToAction("Product_Edit");
+            TempData["Success"] = pro.Name + " Product Update Has Been Successfully!";
+            return RedirectToAction("Product_Index");
         }
 
         public IActionResult Product_Detail(int id)
@@ -420,7 +520,7 @@ namespace E_Commerce.Controllers
             var delete = db.Products.Find(id);
             db.Products.Remove(delete);
             db.SaveChanges();
-            TempData["Pruduct-Delete"] = "Product has been Drop Successfully!";
+            TempData["Success"] = delete.Name + " Product has been Drop Successfully!";
             return RedirectToAction("Product_Index");
         }
         // Product   <--------- Start Line 258 --------->
