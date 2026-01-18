@@ -3,6 +3,7 @@ using E_Commerce.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace E_Commerce.Controllers
 {
@@ -275,8 +276,7 @@ namespace E_Commerce.Controllers
             if (HttpContext.Session.GetInt32("Admin_id") != null)
             {
                 var cat = db.Categorys.ToList();
-                ViewBag.cat = cat;
-                return View();
+                return View(cat);
             }
             else
             {
@@ -286,19 +286,36 @@ namespace E_Commerce.Controllers
         [HttpPost]
         public IActionResult Product_Create(Product pro, IFormFile Image)
         {
-
             bool hasError = false;
+            if(Image != null)
+            {
+                var filename = Path.GetFileName(Image.FileName);
+                var filepath = Path.Combine(env.WebRootPath, "Product-Image", filename);
+                using (var fs = new FileStream(filepath, FileMode.Create))
+                {
+                    Image.CopyTo(fs);
+                    pro.ProductImg = filename;
+                }
+
+            }
+            else
+            {
+                TempData["Image"] = "Image is required";
+                hasError = true;
+            }
 
             // Name Validation
             if (string.IsNullOrWhiteSpace(pro.Name))
             {
                 TempData["Name"] = "Name is required";
                 hasError = true;
-            }else if(!Regex.IsMatch(pro.Name, @"^[A-Za-z]+$"))
+            }
+            else if (!Regex.IsMatch(pro.Name, @"^[A-Za-z]+$"))
             {
                 TempData["Name-err"] = "Product name must contain only letters";
                 hasError = true;
-            }else if(pro.Name.Length <= 4)
+            }
+            else if (pro.Name.Length <= 4)
             {
                 TempData["Name-length"] = "Please enter a valid product name";
                 hasError = true;
@@ -309,9 +326,10 @@ namespace E_Commerce.Controllers
             // CategoryId Validation
             if (pro.CategoryId == null || pro.CategoryId == 0)
             {
-                TempData["CategoryId"] = "Category is required";
+                TempData["CategoryId-err"] = "Category is required";
                 hasError = true;
             }
+            TempData["CategoryId"] = pro.CategoryId;
 
 
             // Model Validation
@@ -354,6 +372,9 @@ namespace E_Commerce.Controllers
             TempData["DescriptionValue"] = pro.Description;
 
 
+            // IsActive Validation
+            TempData["Isactive"] = pro.IsActive;
+
 
             if (hasError)
             {
@@ -367,7 +388,27 @@ namespace E_Commerce.Controllers
             TempData["Success-Create"] = "Product Create Has Been Successfully!";
             return RedirectToAction("Product_Index");
         }
-        // Product   <--------- Start Line 258 --------->
+
+        public IActionResult Product_Edit(int id)
+        {
+            ViewBag.category = db.Categorys.ToList();
+            var oldPro = db.Products.FirstOrDefault(p => p.Id == id); 
+            return View(oldPro);
+        }
+        [HttpPost]
+        public IActionResult Product_Edit(Product newpro)
+        {
+            db.Products.Update(newpro);
+            db.SaveChanges();
+            TempData["Success-Create"] = "Product Update Has Been Successfully!";
+            return RedirectToAction("Product_Edit");
+        }
+
+        public IActionResult Product_Detail(int id)
+        {
+            var detail = db.Products.FirstOrDefault(p => p.Id == id);
+            return View(detail);
+        }
 
         public IActionResult Product_Delete_Premission(int id)
         {
@@ -382,7 +423,7 @@ namespace E_Commerce.Controllers
             TempData["Pruduct-Delete"] = "Product has been Drop Successfully!";
             return RedirectToAction("Product_Index");
         }
-
+        // Product   <--------- Start Line 258 --------->
 
     }
 }

@@ -1,10 +1,8 @@
-﻿@model List<Category>
-@removeTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@removeTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 
 
-<form method="post" enctype="multipart/form-data">
-
+<form method="post" enctype="multipart/form-data" action="Product_Edit">
     <!-- Category & Name -->
     <div class="row mb-4">
         <div class="col-md-6 mb-3">
@@ -13,9 +11,9 @@
                 <span class="input-group-text bg-dark text-white"><i class="fas fa-tags"></i></span>
                 <select name="CategoryId" class="form-select">
                     <option value="0">-- Select Category --</option>
-                    @foreach (var cat in Model)
+                    @foreach (var cat in ViewBag.category)
                     {
-                        <option value="@cat.Id" @(TempData["CategoryId"] != null && (int)TempData["CategoryId"] == cat.Id ? "selected" : "") >@cat.Name</option>
+                        <option value="@cat.Id" @(Model.CategoryId != null && (int)Model.CategoryId == cat.Id ? "selected" : "")>@cat.Name</option>
                     }
                 </select>
             </div>
@@ -28,7 +26,7 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Product Name</label>
-            <input name="Name" value="@TempData["NameValue"]" class="form-control form-control-lg border-dark" placeholder="Enter product name" />
+            <input name="Name" value="@Model.Name" class="form-control form-control-lg border-dark" placeholder="Enter product name" />
 
             @if (TempData["Name"] != null)
             {
@@ -52,7 +50,7 @@
     <div class="row mb-4">
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Description</label>
-            <textarea name="Description" class="form-control border-dark" rows="5" placeholder="Enter product description">@TempData["DescriptionValue"]</textarea>
+            <textarea name="Description" class="form-control border-dark" rows="5" placeholder="Enter product description">@Model.Description</textarea>
 
             @if (TempData["Description"] != null)
             {
@@ -62,7 +60,7 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Model</label>
-            <input name="Model" value="@TempData["ModelValue"]" class="form-control border-dark" placeholder="Enter model" />
+            <input name="Model" value="@Model.Model" class="form-control border-dark" placeholder="Enter model" />
 
             @if (TempData["Model"] != null)
             {
@@ -81,7 +79,7 @@
     <div class="row mb-4">
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Price (Pkr)</label>
-            <input type="number" value="@TempData["PriceValue"]" name="Price" class="form-control border-dark" placeholder="Enter price" />
+            <input type="number" value="@Model.Price" name="Price" class="form-control border-dark" placeholder="Enter price" />
             @if (TempData["Price"] != null)
             {
                 <span class="text-danger">@TempData["Price"]</span>
@@ -90,7 +88,7 @@
 
         <div class="col-md-6 mb-3">
             <label class="form-label fw-bold">Stock Quantity</label>
-            <input type="number" value="@TempData["StockValue"]" name="Stock" class="form-control border-dark" placeholder="Enter stock quantity" />
+            <input type="number" value="@Model.Stock" name="Stock" class="form-control border-dark" placeholder="Enter stock quantity" />
 
             @if (TempData["Stock"] != null)
             {
@@ -112,19 +110,19 @@
             <label class="form-label fw-bold">Stock Status</label>
             <select name="IsActive" class="form-select border-dark" required>
                 <option value="true" class="text-success"
-                        @(TempData["IsActive"] != null && (bool)TempData["IsActive"] ? "selected" : "")>
+                        @(Model.IsActive != null && (bool)Model.IsActive ? "selected" : "")>
                     Active
                 </option>
                 <option value="false" class="text-danger"
-                        @(TempData["IsActive"] != null && (bool)TempData["IsActive"] == false ? "selected" : "")>
+                        @(Model.IsActive != null && (bool)Model.IsActive == false ? "selected" : "")>
                     Non Active
                 </option>
             </select>
         </div>
     </div>
 
-    
-    
+
+
     <!-- Buttons -->
     <div class="d-flex justify-content-end mt-4">
         <button type="submit" class="btn btn-dark btn-lg me-2"><i class="fas fa-plus-circle me-1"></i>Add Product</button>

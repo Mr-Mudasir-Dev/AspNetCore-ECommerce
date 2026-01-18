@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\admin\admin_profile_image\" />
+    <Folder Include="wwwroot\Product-Image\" />
   </ItemGroup>
 
 </Project>

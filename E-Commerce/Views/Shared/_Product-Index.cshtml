@@ -3,9 +3,10 @@
     <tr>
         <td>@p.Name</td>
         <td>@p.Price</td>
-        <td><img src="" alt="@p.Name" width="50px" /></td>
+        <td><img src="~/Product-Image/@p.ProductImg" alt="@p.Name" width="50px" /></td>
         <td>
-            <a class="btn btn-sm btn-primary" asp-controller="Admin" asp-action="Category_Edit" asp-route-id="@p.Id">Edit</a>
+            <a class="btn btn-sm btn-primary" asp-controller="Admin" asp-action="Product_Edit" asp-route-id="@p.Id">Edit</a>
+            <a class="btn btn-sm btn-warning" asp-controller="Admin" asp-action="Product_Detail" asp-route-id="@p.Id">Detail</a>
             <a class="btn btn-sm btn-danger" asp-controller="Admin" asp-action="Product_Delete_Premission" asp-route-id="@p.Id">Delete</a>
         </td>
     </tr>

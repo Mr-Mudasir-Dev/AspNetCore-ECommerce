@@ -1,0 +1,73 @@
+﻿@model Product
+
+<div class="container-fluid mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-white">
+            <h5 class="mb-0">@Model.Name - Detail</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+
+                <!-- Image -->
+                <div class="col-md-4 text-center">
+                    <img src="~/Product-Image/@Model.ProductImg"
+                         class="img-fluid img-thumbnail shadow"
+                         style="max-height:300px; object-fit:cover;"
+                         alt="Product Image" />
+                </div>
+
+                <!-- Details -->
+                <div class="col-md-8">
+                    <h3 class="fw-bold">@Model.Name</h3>
+
+                    <hr />
+
+                    <h6>Category</h6>
+                    <p>@Model.CategoryId</p>
+
+                    <hr />
+
+                    <p class="text-muted mb-1">
+                        Product Id:
+                        <strong>@Model.Id</strong>
+                    </p>
+
+                    <p class="text-muted mb-1">
+                        Model:
+                        <strong>@Model.Model</strong>
+                    </p>
+
+                    <p class="text-muted mb-1">
+                        Price:
+                        <strong>@Model.Price</strong>
+                    </p>
+
+                    <p class="text-muted mb-1">
+                        Stock:
+                        <strong>@Model.Stock</strong>
+                    </p>
+
+                    <p class="text-muted mb-1">
+                        Status:
+                        <strong>
+                            @(Model.IsActive == true ? "Active" : "Non Active")
+                        </strong>
+                    </p>
+
+                    <hr />
+
+                    <h6>Description</h6>
+                    <p>@Model.Description</p>
+
+                    <a class="btn btn-warning mt-3"
+                       asp-controller="Admin"
+                       asp-action="Product_Index">
+                        Back
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
