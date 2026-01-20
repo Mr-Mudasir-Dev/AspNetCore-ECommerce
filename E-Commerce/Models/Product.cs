@@ -12,6 +12,7 @@
         public string? Description { get; set; }
         public string? ProductImg { get; set; }
         public bool? IsActive { get; set; }
+        public Category Category { get; set; }
 
     }
 }

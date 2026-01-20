@@ -15,5 +15,24 @@ namespace E_Commerce.Models
         // Products Table Add In Database
         public DbSet <Product> Products { get; set; }
 
+        // Qustumers Table Add In Database
+        public DbSet<Qustomer> Qustomers { get; set; }
+
+
+
+
+
+        // Table Relation Behavior
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // (Product, Category) One Category Many Products 
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+        
+
     }
 }

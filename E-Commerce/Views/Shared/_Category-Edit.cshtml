@@ -1,4 +1,6 @@
-﻿<form method="post" asp-action="Category_Edit">
+﻿@removeTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<form method="post" asp-action="Category_Edit">
 
     <div class="border rounded p-4">
         <h6 class="fw-bold mb-2">Edit Category</h6>
@@ -21,13 +23,20 @@
             <span class="text-danger">@TempData["caterror"]</span>
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="Status" class="form-control form-select form-control-lg">
+                <option value="true" @(Model.Status == true? "selected" : "") class="text-success">Active</option>
+                <option value="false" @(Model.Status == false? "selected" : "") class="text-danger">Non Active</option>
+            </select>
+        </div>
+
 
         <div class="d-grid mt-4">
             <button type="submit" class="btn btn-primary btn-lg">
-                Create Category
+                Update Category
             </button>
-            <a asp-controller="Admin"
-               asp-action="Category_All_Show"
+            <a href="@Url.Action("Category_All_Show","Admin")"
                class="btn btn-secondary btn-lg mt-3">
                 Back
             </a>

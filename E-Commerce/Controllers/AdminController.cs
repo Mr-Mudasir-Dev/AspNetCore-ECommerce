@@ -22,6 +22,8 @@ namespace E_Commerce.Controllers
         }
 
 
+
+
         // Main Dashboard page
         public IActionResult Index()
         {
@@ -56,6 +58,9 @@ namespace E_Commerce.Controllers
             return View();
         }
 
+
+
+
         // Admin Logout 
         public IActionResult Logout()
         {
@@ -66,6 +71,8 @@ namespace E_Commerce.Controllers
             }
             return View();
         }
+
+
 
         // Profile Page    <-------- End Line 141 -------->
         public IActionResult Profile(int id)
@@ -144,28 +151,46 @@ namespace E_Commerce.Controllers
             db.SaveChanges();
             return RedirectToAction("Profile");
         }
-        // Profile Page     <-------- Start Line 67 -------->
+        //      <--------- Profile Page --------->
 
 
 
 
 
 
-        // Category   <-------- End Line 253 -------->
 
+        //    <--------  Category  -------->
 
         //Category All Record Show Page
         public IActionResult Category_All_Show()
         {
-            var category = db.Categorys.ToList();
-            return View(category);
+
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var category = db.Categorys.ToList();
+                return View(category);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+            
         }
+
 
 
         //Category Create Page
         public IActionResult Create_Category()
         {
-            return View();
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+            
         }
         [HttpPost]
         public IActionResult Create_Category(Category cat, string CategoryName)
@@ -192,27 +217,31 @@ namespace E_Commerce.Controllers
         }
 
 
+
         //Category Edit Page
         public IActionResult Category_Edit(int id)
         {
-            var edit = db.Categorys.FirstOrDefault(c => c.Id == id);
-            return View(edit);
+
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var edit = db.Categorys.FirstOrDefault(c => c.Id == id);
+                return View(edit);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+
         }
         [HttpPost]
         public IActionResult Category_Edit(Category cat, string CategoryName, int id)
         {
             var old = db.Categorys.AsNoTracking().FirstOrDefault(c => c.Id == id);
-
+            bool IsCorrect = false;
 
             if (string.IsNullOrEmpty(CategoryName))
             {
                 TempData["catnull"] = "Category name is required";
-                return RedirectToAction("Category_Edit");
-            }
-
-            if (CategoryName == old.Name)
-            {
-                TempData["cat-old"] = "Your Category Name As Old If You No Need To Edit Go Back";
                 return RedirectToAction("Category_Edit");
             }
 
@@ -221,24 +250,49 @@ namespace E_Commerce.Controllers
                 TempData["caterror"] = "Category name must contain only letters.";
                 return RedirectToAction("Category_Edit");
             }
-            else
+            
+            if (CategoryName != old.Name)
             {
+                IsCorrect = true;
+            }
+            if(cat.Status != old.Status)
+            {
+                IsCorrect = true;
+            }
+
+            if (!IsCorrect)
+            {
+                TempData["Error"] = "If you no need to edit cayegory go back";
+                return RedirectToAction("Category_Edit", new {id = old.Id});
+            }
+
+
                 cat.Name = CategoryName;
                 db.Categorys.Update(cat);
                 db.SaveChanges();
                 TempData["Edit-Success"] = "Your Category " + cat.Name + " has been Edit successfully";
                 return RedirectToAction("Category_All_Show");
-            }
 
         }
+
+
 
 
         //Category Delete Permission Page
         public IActionResult Category_Delete_Permission(int id)
         {
-            var idrecord = db.Categorys.FirstOrDefault(c => c.Id == id);
-            return View(idrecord);
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var idrecord = db.Categorys.FirstOrDefault(c => c.Id == id);
+                return View(idrecord);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+            
         }
+
 
 
         //Category Delete Recode Where Id
@@ -251,12 +305,11 @@ namespace E_Commerce.Controllers
             return RedirectToAction("Category_All_Show");
         }
 
-        // Category   <--------- Start Line 147 --------->
 
 
 
 
-        // Product   <--------- End Line 147 --------->
+        // Product Index Page
         public IActionResult Product_Index()
         {
             if (HttpContext.Session.GetInt32("Admin_id") != null)
@@ -271,6 +324,9 @@ namespace E_Commerce.Controllers
             
         }
 
+
+
+        // Product Create Page
         public IActionResult Product_Create()
         {
             if (HttpContext.Session.GetInt32("Admin_id") != null)
@@ -286,7 +342,8 @@ namespace E_Commerce.Controllers
         [HttpPost]
         public IActionResult Product_Create(Product pro, IFormFile Image)
         {
-            bool hasError = false;
+            bool hasError = false; // Data validation Chacl
+
             if(Image != null)
             {
                 var filename = Path.GetFileName(Image.FileName);
@@ -351,6 +408,11 @@ namespace E_Commerce.Controllers
                 TempData["Price"] = "Price is required";
                 hasError = true;
             }
+            else if (pro.Price <= 8)
+            {
+                TempData["Price-err"] = "Enter a valid Price";
+                hasError = true;
+            }
             TempData["PriceValue"] = pro.Price.ToString();
 
 
@@ -389,20 +451,32 @@ namespace E_Commerce.Controllers
             return RedirectToAction("Product_Index");
         }
 
+
+
+
+        // Product Edit Page
         public IActionResult Product_Edit(int id)
         {
-            ViewBag.category = db.Categorys.ToList();
-            var oldPro = db.Products.FirstOrDefault(p => p.Id == id); 
-            return View(oldPro);
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                ViewBag.category = db.Categorys.ToList();
+                var oldPro = db.Products.FirstOrDefault(p => p.Id == id);
+                return View(oldPro);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+            
         }
         [HttpPost]
         public IActionResult Product_Edit(Product pro, int pId, IFormFile Image)
         {
             var old = db.Products.AsNoTracking().FirstOrDefault(p => p.Id == pId);
 
-            bool hasError = false;
-            bool isCorrect = false;
-           
+            bool hasError = false; // Data validation Chacl
+            bool isCorrect = false; // Data != old data if Edit Success
+            
 
             // Name Validation
             if (string.IsNullOrWhiteSpace(pro.Name))
@@ -419,6 +493,9 @@ namespace E_Commerce.Controllers
             {
                 TempData["Name-length"] = "Please enter a valid product name";
                 hasError = true;
+            }else if(pro.Name != old.Name)
+            {
+                isCorrect = true;
             }
 
 
@@ -427,6 +504,10 @@ namespace E_Commerce.Controllers
             {
                 TempData["CategoryId-err"] = "Category is required";
                 hasError = true;
+            }
+            else if (pro.CategoryId != old.CategoryId)
+            {
+                isCorrect = true;
             }
 
 
@@ -441,6 +522,10 @@ namespace E_Commerce.Controllers
                 TempData["Model-err"] = "Model can contain only letters and numbers";
                 hasError = true;
             }
+            else if (pro.Model != old.Model)
+            {
+                isCorrect = true;
+            }
 
 
             // Price Validation
@@ -453,6 +538,10 @@ namespace E_Commerce.Controllers
                 TempData["Price-err"] = "Enter a valid Price";
                 hasError = true;
             }
+            else if (pro.Price != old.Price)
+            {
+                isCorrect = true;
+            }
 
 
             // Stock Validation
@@ -460,6 +549,10 @@ namespace E_Commerce.Controllers
             {
                 TempData["Stock"] = "Stock is required";
                 hasError = true;
+            }
+            else if (pro.Stock != old.Stock)
+            {
+                isCorrect = true;
             }
 
 
@@ -469,14 +562,22 @@ namespace E_Commerce.Controllers
                 TempData["Description"] = "Description is required";
                 hasError = true;
             }
-
-
-            if (hasError)
+            else if (pro.Description != old.Description)
             {
-                TempData["haserror"] = "Please fill all required fields";
-                return RedirectToAction("Product_Edit", new {id = pId});
+                isCorrect = true;
             }
 
+
+
+            // ISActive
+            if(pro.IsActive !=  old.IsActive)
+            {
+                isCorrect = true;
+            }
+
+
+            
+            // Product Image Edit 
             if (Image != null && Image.Length > 0)
             {
                 var filename = Path.GetFileName(Image.FileName);
@@ -485,6 +586,7 @@ namespace E_Commerce.Controllers
                 {
                     Image.CopyTo(fs);
                     pro.ProductImg = filename;
+                    isCorrect = true;
                 }
 
             }
@@ -496,25 +598,68 @@ namespace E_Commerce.Controllers
                 }
             }
 
+            if (hasError)
+            {
+                TempData["haserror"] = "Please fill all required fields";
+                return RedirectToAction("Product_Edit", new { id = pId });
+            }
+
+            // Product Edit Success If run
             TempData.Clear();
+            if (isCorrect)
+            {
+                TempData["Success"] = pro.Name + " Product Update Has Been Successfully!";
+            }
+            else
+            {
+                TempData["Error"] = " If you no neet to edit Product go back!";
+                return RedirectToAction("Product_Edit", new {id = pId});
+            }
             pro.Id = pId;
             db.Products.Update(pro);
             db.SaveChanges();
-            TempData["Success"] = pro.Name + " Product Update Has Been Successfully!";
             return RedirectToAction("Product_Index");
         }
 
+
+
+
+        // Product Detail Page
         public IActionResult Product_Detail(int id)
         {
-            var detail = db.Products.FirstOrDefault(p => p.Id == id);
-            return View(detail);
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var detail = db.Products.Include(p => p.Category).FirstOrDefault(p => p.Id == id);
+                return View(detail);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+            
         }
 
+
+
+        // Product Delete Premissiom Page
         public IActionResult Product_Delete_Premission(int id)
         {
-            var pro = db.Products.FirstOrDefault(p => p.Id == id);
-            return View(pro);
+
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var pro = db.Products.FirstOrDefault(p => p.Id == id);
+                return View(pro);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+            
         }
+
+
+
+        // Product Delete Success
         public IActionResult Product_Delete(int id)
         {
             var delete = db.Products.Find(id);
@@ -523,7 +668,27 @@ namespace E_Commerce.Controllers
             TempData["Success"] = delete.Name + " Product has been Drop Successfully!";
             return RedirectToAction("Product_Index");
         }
-        // Product   <--------- Start Line 258 --------->
+        // Product End
 
+
+
+
+
+
+
+        // Qustomer Start
+        public IActionResult Qustomer_Index()
+        {
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var Qus = db.Qustomers.ToList();
+                return View(Qus);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+            
+        }
     }
 }

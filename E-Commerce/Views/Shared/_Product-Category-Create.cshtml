@@ -8,7 +8,7 @@
             Numbers and special characters are not allowed.
         </p>
 
-
+        
         <div class="mb-3">
             <label class="form-label">Category Name</label>
             <input type="text"
@@ -17,6 +17,14 @@
                    placeholder="Enter category name" />
             <span class="text-danger">@TempData["catnull"]</span>
             <span class="text-danger">@TempData["caterror"]</span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select name="Status" class="form-control form-select form-control-lg">
+                <option value="true" class="text-success">Active</option>
+                <option value="false" class="text-danger">Non Active</option>
+            </select>
         </div>
 
 

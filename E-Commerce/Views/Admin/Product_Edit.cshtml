@@ -1,8 +1,8 @@
 ﻿@model Product
 
 <div class="container-fluid px-5 mt-5 mb-5">
+    @await Html.PartialAsync("_Product-Edit-Msg") <!-- Form -->
     <div class="card shadow-lg border-0 rounded-4">
-
         <!-- Header -->
         <div class="card-header bg-dark text-white rounded-top-4">
             <h4 class="mb-0">
@@ -15,7 +15,7 @@
         
         <!-- Body -->
         <div class="card-body p-4 bg-light">
-            @await Html.PartialAsync("_Product-Edit")
+            @await Html.PartialAsync("_Product-Edit") <!-- Form -->
         </div>
     </div>
 </div>

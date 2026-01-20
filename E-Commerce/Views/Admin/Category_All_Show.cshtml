@@ -15,6 +15,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Category Name</th>
+                        <th>Category Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -24,6 +25,7 @@
                     {
                         <tr>
                             <td>@c.Name</td>
+                            <td>@(c.Status == true ? "Active": "Non Active")</td>
                             <td>
                                 <a class="btn btn-sm btn-primary" asp-controller="Admin" asp-action="Category_Edit" asp-route-id="@c.Id">Edit</a>
                                 <a class="btn btn-sm btn-danger" asp-controller="Admin" asp-action="Category_Delete_Permission" asp-route-id="@c.Id">Delete</a>

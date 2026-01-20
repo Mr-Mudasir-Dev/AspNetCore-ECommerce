@@ -1,0 +1,37 @@
+﻿@model List<Qustomer>
+
+<div class="container-fluid mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">All Qustomers Record</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped table-hover text-center align-middle w-100">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.Name</td>
+                            <td>@p.Email</td>
+                            <td>@p.Phone</td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" asp-controller="Admin" asp-action="Product_Edit" asp-route-id="@p.Id">Edit</a>
+                                <a class="btn btn-sm btn-warning" asp-controller="Admin" asp-action="Product_Detail" asp-route-id="@p.Id">Detail</a>
+                                <a class="btn btn-sm btn-danger" asp-controller="Admin" asp-action="Product_Delete_Premission" asp-route-id="@p.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
