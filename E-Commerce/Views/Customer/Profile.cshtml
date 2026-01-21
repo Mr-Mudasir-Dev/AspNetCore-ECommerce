@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout-User.cshtml";
+}
+
+
+<div class="container-fluid contact py-5">
+    <div class="container py-5">
+        <div class="p-5 bg-light rounded">
+            <div class="row g-5 align-items-center">
+
+                <!-- LEFT: USER IMAGE -->
+                <div class="col-lg-4 text-center">
+                    <div class="mb-4">
+                        <img src="~/UserImages/"
+                             class="img-fluid rounded-circle border border-4 border-primary"
+                             style="width:220px;height:220px;object-fit:cover;">
+                    </div>
+                    <h3 class="mb-1">sca</h3>
+                    <p class="text-muted">ascs</p>
+                </div>
+
+                <!-- RIGHT: USER INFO -->
+                <div class="col-lg-8">
+                    <h2 class="mb-4 text-primary">User Profile</h2>
+
+                    <form>
+                        <div class="row g-4">
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Full Name</label>
+                                <input type="text" class="form-control form-control-lg"
+                                       value="">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Phone</label>
+                                <input type="text" class="form-control form-control-lg"
+                                       value="">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Email</label>
+                                <input type="email" class="form-control form-control-lg"
+                                       value="" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Password</label>
+                                <input type="password" class="form-control form-control-lg"
+                                       placeholder="Update password">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Profile Image</label>
+                                <input type="file" class="form-control form-control-lg">
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <button class="btn btn-primary btn-lg w-100">
+                                    Update Profile
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

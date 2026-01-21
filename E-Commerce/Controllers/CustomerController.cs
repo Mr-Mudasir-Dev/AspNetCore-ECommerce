@@ -20,18 +20,15 @@ namespace E_Commerce.Controllers
         }
 
 
+        // Main Page
         public IActionResult Index()
         {
-            if(HttpContext.Session.Get("CustomerId") != null)
-            {
-                return View();
-            }
-            {
-                return RedirectToAction("Login");
-            }
+            return View();
         }
 
 
+
+        // Register Page
         public IActionResult Register()
         {
             return View();
@@ -39,7 +36,9 @@ namespace E_Commerce.Controllers
         [HttpPost]
         public IActionResult Register(Customer cust)
         {
+
             bool hasError = false;
+
 
 
             // Name Validation
@@ -54,6 +53,7 @@ namespace E_Commerce.Controllers
                 hasError = true;
             }
             TempData["Name"] = cust.Name;
+
 
 
             // Phone Validation
@@ -88,10 +88,13 @@ namespace E_Commerce.Controllers
             }
 
 
+
             if (hasError)
             {
                 return RedirectToAction("Register");
             }
+
+
 
             db.Customers.Add(cust);
             db.SaveChanges();
@@ -100,6 +103,8 @@ namespace E_Commerce.Controllers
 
 
 
+
+        // Login Page
         public IActionResult Login()
         {
             return View();
@@ -117,6 +122,24 @@ namespace E_Commerce.Controllers
             {
                 ViewBag.error = "Incorrect Email/Password";
             }
+            return View();
+        }
+
+
+
+        
+        // Logout
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("CustomerId");
+            return RedirectToAction("Index");
+        }
+
+
+
+        // Profile Page
+        public IActionResult Profile()
+        {
             return View();
         }
     }
