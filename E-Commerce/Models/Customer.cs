@@ -1,6 +1,6 @@
 ﻿namespace E_Commerce.Models
 {
-    public class Qustomer
+    public class Customer
     {
         public int Id { get; set; }
         public string? Name { get; set; }

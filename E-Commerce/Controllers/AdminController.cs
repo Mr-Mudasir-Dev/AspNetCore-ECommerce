@@ -681,14 +681,14 @@ namespace E_Commerce.Controllers
         {
             if (HttpContext.Session.GetInt32("Admin_id") != null)
             {
-                var Qus = db.Qustomers.ToList();
-                return View(Qus);
+                var Cus = db.Customers.ToList();
+                return View(Cus);
             }
             else
             {
                 return RedirectToAction("Login");
             }
-            
+
         }
     }
 }

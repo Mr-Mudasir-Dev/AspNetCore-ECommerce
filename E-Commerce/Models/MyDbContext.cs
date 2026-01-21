@@ -15,8 +15,8 @@ namespace E_Commerce.Models
         // Products Table Add In Database
         public DbSet <Product> Products { get; set; }
 
-        // Qustumers Table Add In Database
-        public DbSet<Qustomer> Qustomers { get; set; }
+        // Custumers Table Add In Database
+        public DbSet<Customer> Customers { get; set; }
 
 
 
