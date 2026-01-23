@@ -362,12 +362,12 @@ namespace E_Commerce.Controllers
             }
 
             // Name Validation
-            if (string.IsNullOrWhiteSpace(pro.Name))
+            if (string.IsNullOrEmpty(pro.Name))
             {
                 TempData["Name"] = "Name is required";
                 hasError = true;
             }
-            else if (!Regex.IsMatch(pro.Name, @"^[A-Za-z]+$"))
+            else if (!Regex.IsMatch(pro.Name, @"^[A-Za-z ]+$"))
             {
                 TempData["Name-err"] = "Product name must contain only letters";
                 hasError = true;
@@ -394,7 +394,7 @@ namespace E_Commerce.Controllers
             {
                 TempData["Model"] = "Model is required";
                 hasError = true;
-            }else if(!Regex.IsMatch(pro.Model, @"^[A-Za-z0-9]+$"))
+            }else if(!Regex.IsMatch(pro.Model, @"^[A-Za-z0-9 ]+$"))
             {
                 TempData["Model-err"] = "Model can contain only letters and numbers";
                 hasError = true;
@@ -479,12 +479,12 @@ namespace E_Commerce.Controllers
             
 
             // Name Validation
-            if (string.IsNullOrWhiteSpace(pro.Name))
+            if (string.IsNullOrEmpty(pro.Name))
             {
                 TempData["Name"] = "Name is required";
                 hasError = true;
             }
-            else if (!Regex.IsMatch(pro.Name, @"^[A-Za-z]+$"))
+            else if (!Regex.IsMatch(pro.Name, @"^[A-Za-z ]+$"))
             {
                 TempData["Name-err"] = "Product name must contain only letters";
                 hasError = true;
@@ -517,7 +517,7 @@ namespace E_Commerce.Controllers
                 TempData["Model"] = "Model is required";
                 hasError = true;
             }
-            else if (!Regex.IsMatch(pro.Model, @"^[A-Za-z0-9]+$"))
+            else if (!Regex.IsMatch(pro.Model, @"^[A-Za-z0-9 ]+$"))
             {
                 TempData["Model-err"] = "Model can contain only letters and numbers";
                 hasError = true;
