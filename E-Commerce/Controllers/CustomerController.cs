@@ -141,8 +141,15 @@ namespace E_Commerce.Controllers
         // Profile Page
         public IActionResult Profile(int id)
         {
-            var pro = db.Customers.FirstOrDefault(c => c.Id == id);
-            return View(pro);
+            if(HttpContext.Session.GetInt32("CustomerId") != null)
+            {
+                var pro = db.Customers.FirstOrDefault(c => c.Id == id);
+                return View(pro);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
         [HttpPost]
         public IActionResult Profile(Customer cust, IFormFile Image, int id)

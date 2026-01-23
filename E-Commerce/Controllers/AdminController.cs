@@ -690,5 +690,47 @@ namespace E_Commerce.Controllers
             }
 
         }
+
+
+        // Customer_Delete_Premission Page
+        public IActionResult Customer_Delete_Premission(int id)
+        {
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var prem = db.Customers.FirstOrDefault(c => c.Id == id);
+                return View(prem);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
+
+
+        // Customer_Delete_Premission Page
+        public IActionResult Customer_Detail(int id)
+        {
+            if (HttpContext.Session.GetInt32("Admin_id") != null)
+            {
+                var detail = db.Customers.FirstOrDefault(c => c.Id == id);
+                return View(detail);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
+
+        // Delete Conform
+        public IActionResult Customer_Delete(int id)
+        {
+            var delete = db.Customers.Find(id);
+            db.Customers.Remove(delete);
+            db.SaveChanges();
+            TempData["Success"] = delete.Name + " customer was successfully block";
+            return RedirectToAction("Qustomer_Index");
+        }
     }
 }
