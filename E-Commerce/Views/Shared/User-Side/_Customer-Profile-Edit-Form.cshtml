@@ -1,0 +1,49 @@
+﻿<form method="post" enctype="multipart/form-data">
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold">Full Name</label>
+            <input type="text" name="Name" class="form-control form-control-lg"
+                   value="@Model.Name">
+            @if (TempData["NameError"] != null)
+            {
+                <small class="text-danger">@TempData["NameError"]</small>
+            }
+        </div>
+
+
+        <div class="col-md-6">
+            <label class="form-label fw-bold">Phone</label>
+            <input type="tel" name="Phone" class="form-control form-control-lg"
+                   value="@Model.Phone">
+            @if (TempData["PhoneError"] != null)
+            {
+                <small class="text-danger">@TempData["PhoneError"]</small>
+            }
+        </div>
+
+
+        <div class="col-md-12">
+            <label class="form-label fw-bold">Email</label>
+            <input type="email" name="Email" class="form-control form-control-lg"
+                   value="@Model.Email">
+            @if (TempData["EmailError"] != null)
+            {
+                <small class="text-danger">@TempData["EmailError"]</small>
+            }
+        </div>
+
+
+        <div class="col-12">
+            <label class="form-label fw-bold">Profile Image</label>
+            <input type="file" name="Image" class="form-control form-control-lg">
+        </div>
+
+        <div class="col-12 mt-3">
+            <button class="btn btn-primary btn-lg w-100">
+                Update Profile
+            </button>
+        </div>
+
+    </div>
+</form>

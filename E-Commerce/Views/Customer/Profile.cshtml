@@ -1,9 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout-User.cshtml";
 }
+@model Customer
 
 
 <div class="container-fluid contact py-5">
+    @await Html.PartialAsync("User-Side/_Profile-Msg")
     <div class="container py-5">
         <div class="p-5 bg-light rounded">
             <div class="row g-5 align-items-center">
@@ -11,58 +13,49 @@
                 <!-- LEFT: USER IMAGE -->
                 <div class="col-lg-4 text-center">
                     <div class="mb-4">
-                        <img src="~/UserImages/"
+                        <img src="~/user/User-Image/@Model.Image"
                              class="img-fluid rounded-circle border border-4 border-primary"
                              style="width:220px;height:220px;object-fit:cover;">
                     </div>
-                    <h3 class="mb-1">sca</h3>
-                    <p class="text-muted">ascs</p>
+                    <h3 class="mb-1">@Model.Name</h3>
+                    <p class="text-muted">@Model.Email</p>
                 </div>
 
                 <!-- RIGHT: USER INFO -->
                 <div class="col-lg-8">
-                    <h2 class="mb-4 text-primary">User Profile</h2>
+                    <h2 class="mb-4 text-primary">Edit Profile</h2>
 
-                    <form>
-                        <div class="row g-4">
+                    @await Html.PartialAsync("User-Side/_Customer-Profile-Edit-Form")
 
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Full Name</label>
-                                <input type="text" class="form-control form-control-lg"
-                                       value="">
-                            </div>
+                </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Phone</label>
-                                <input type="text" class="form-control form-control-lg"
-                                       value="">
-                            </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Email</label>
-                                <input type="email" class="form-control form-control-lg"
-                                       value="" readonly>
-                            </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Password</label>
-                                <input type="password" class="form-control form-control-lg"
-                                       placeholder="Update password">
-                            </div>
 
-                            <div class="col-12">
-                                <label class="form-label fw-bold">Profile Image</label>
-                                <input type="file" class="form-control form-control-lg">
-                            </div>
+<div class="container-fluid contact py-3">
+    <div class="container py-5">
+        <div class="p-5 bg-light rounded">
+            <div class="row g-5 align-items-center">
 
-                            <div class="col-12 mt-3">
-                                <button class="btn btn-primary btn-lg w-100">
-                                    Update Profile
-                                </button>
-                            </div>
+                <!-- RIGHT: USER INFO -->
+                <div class="col-12">
+                    <div class="p-4 rounded bg-white border">
+                        <h4 class="text-primary mb-3">Change Password</h4>
 
-                        </div>
-                    </form>
+                        <p class="text-muted mb-4">
+                            If you want to change your password, please enter your current password first.
+                            Make sure the current password is correct. Your new password must be different
+                            from the current one and strong enough to keep your account secure.
+                            Never share your password with anyone.
+                        </p>
+
+                        @await Html.PartialAsync("User-Side/_Customer-Password-Edit-Form")
+
+                    </div>
                 </div>
 
             </div>

@@ -161,7 +161,10 @@
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0">
-                                    <a href="@Url.Action("Profile","Customer")" class="dropdown-item">Profile</a>
+                                    @if(CustomerId != null)
+                                    {
+                                        <a href="@Url.Action("Profile","Customer", new {id = CustomerId})" class="dropdown-item">Profile</a>
+                                    }
                                     <a href="cart.html" class="dropdown-item">Cart Page</a>
                                     <a href="cheackout.html" class="dropdown-item">Cheackout</a>
                                     <a href="404.html" class="dropdown-item">404 Page</a>
