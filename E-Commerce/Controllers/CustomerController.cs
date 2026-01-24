@@ -1,4 +1,5 @@
 ﻿using E_Commerce.Models;
+using E_Commerce.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
@@ -24,7 +25,13 @@ namespace E_Commerce.Controllers
         // Main Page
         public IActionResult Index()
         {
-            return View();
+            var vm = new CustomerIndexPage
+            {
+                Products = db.Products.Where(p => p.IsActive == true).ToList(),
+                Categorys = db.Categorys.ToList()
+            };
+
+            return View(vm);
         }
 
 
@@ -324,6 +331,14 @@ namespace E_Commerce.Controllers
 
             // Both field null = No Error And Back To Page
             return RedirectToAction("Profile", new { id = CustomerId });
+        }
+
+
+
+        // Product_Detail Page
+        public IActionResult Product_Detail_Page(int id)
+        {
+            return View();
         }
     }
 }

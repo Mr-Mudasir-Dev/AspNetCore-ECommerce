@@ -331,7 +331,7 @@ namespace E_Commerce.Controllers
         {
             if (HttpContext.Session.GetInt32("Admin_id") != null)
             {
-                var cat = db.Categorys.ToList();
+                var cat = db.Categorys.Where(c => c.Status == true).ToList();
                 return View(cat);
             }
             else
