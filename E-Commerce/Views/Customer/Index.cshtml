@@ -178,7 +178,7 @@
 <!-- Our Products Start -->
 <div class="container-fluid product py-5">
     <div class="row g-4">
-        <div class="col-lg-4 text-start wow fadeInLeft mb-2 text-center" data-wow-delay="0.1s">
+        <div class="col-lg-4 text-start wow fadeInLeft mb-2 text-center">
             <h1>Our Products</h1>
         </div>
     </div>
@@ -194,12 +194,16 @@
                                     <div class="product-item-inner border rounded">
                                         <div class="product-item-inner-item">
                                             <img src="~/Product-Image/@pro.ProductImg" class="img-fluid w-100 rounded-top" alt="">
-                                            @if (pro.IsActive == true)
+                                            @if (pro.Stock > 0)
                                             {
-                                                <div class="product-new">Active</div>
+                                                <div class="product-new">In Stock</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="product-new bg-danger">Out of Stock</div>
                                             }
                                             <div class="product-details">
-                                                <a href="@Url.Action("Product_Detail_Page","Customer", new {id = @pro.Id})"><i class="fa fa-eye fa-1x"></i></a>
+                                                <a href="@Url.Action("Product_Detail_Page","Customer", new {id = pro.Id})"><i class="fa fa-eye fa-1x"></i></a>
                                             </div>
                                         </div>
                                         <div class="text-center rounded-bottom p-4">

@@ -2,6 +2,7 @@
     var CustomerId = Context.Session.GetInt32("CustomerId");
 }
 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -102,42 +103,9 @@
                             data-bs-toggle="collapse" data-bs-target="#allCat">
                         <h4 class="m-0"><i class="fa fa-bars me-2"></i>All Categories</h4>
                     </button>
-                    <div class="collapse navbar-collapse rounded-bottom" id="allCat">
-                        <div class="navbar-nav ms-auto py-0">
-                            <ul class="list-unstyled categories-bars">
-                                <li>
-                                    <div class="categories-bars-item">
-                                        <a href="#">Accessories</a>
-                                        <span>(3)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="categories-bars-item">
-                                        <a href="#">Electronics & Computer</a>
-                                        <span>(5)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="categories-bars-item">
-                                        <a href="#">Laptops & Desktops</a>
-                                        <span>(2)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="categories-bars-item">
-                                        <a href="#">Mobiles & Tablets</a>
-                                        <span>(8)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="categories-bars-item">
-                                        <a href="#">SmartPhone & Smart TV</a>
-                                        <span>(5)</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+
+                    @await Component.InvokeAsync("CategoryMenu")
+
                 </nav>
             </div>
             <div class="col-12 col-lg-9">

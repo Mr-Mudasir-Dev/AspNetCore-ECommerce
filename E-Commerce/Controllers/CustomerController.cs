@@ -335,10 +335,11 @@ namespace E_Commerce.Controllers
 
 
 
-        // Product_Detail Page
+        // Product_Detail PagerastDFvc 
         public IActionResult Product_Detail_Page(int id)
         {
-            return View();
+            var pro = db.Products.Include(p => p.Category).FirstOrDefault( P => P.Id == id );
+            return View(pro);
         }
     }
 }

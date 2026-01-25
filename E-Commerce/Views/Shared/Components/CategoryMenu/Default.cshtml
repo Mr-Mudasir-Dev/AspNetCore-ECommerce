@@ -1,0 +1,19 @@
+﻿@model List<Category>
+
+    
+        <div class="collapse navbar-collapse rounded-bottom" id="allCat">
+            <div class="navbar-nav ms-auto py-0">
+                <ul class="list-unstyled categories-bars">
+                    <li>
+                    @foreach (var c in Model)
+                    {
+                        <div class="categories-bars-item">
+                            <a href="@Url.Action("Customer","Category_Product", new {id = @c.Id})">@c.Name</a>
+                        </div>
+                    }
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
