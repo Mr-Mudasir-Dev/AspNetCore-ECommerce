@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_Commerce.ViewComponents
 {
@@ -13,7 +14,7 @@ namespace E_Commerce.ViewComponents
 
         public IViewComponentResult Invoke()
         {
-            var cat = db.Categorys.Where(c => c.Status == true).ToList();
+            var cat = db.Categorys.Where(c => c.Status == true).Include(c => c.Products).ToList();
             return View(cat);
         }
     }

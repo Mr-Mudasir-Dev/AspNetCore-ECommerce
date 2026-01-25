@@ -7,8 +7,8 @@
                     <li>
                     @foreach (var c in Model)
                     {
-                        <div class="categories-bars-item">
-                            <a href="@Url.Action("Customer","Category_Product", new {id = @c.Id})">@c.Name</a>
+                        <div class="categories-bars-item ">
+                        <a href="@Url.Action("CategoryProductPage", "Customer", new { id = @c.Id })">@c.Name</a>
                         </div>
                     }
                     </li>

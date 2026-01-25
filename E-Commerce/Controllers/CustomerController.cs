@@ -335,11 +335,22 @@ namespace E_Commerce.Controllers
 
 
 
-        // Product_Detail PagerastDFvc 
+        // Product_Detail Page 
         public IActionResult Product_Detail_Page(int id)
         {
             var pro = db.Products.Include(p => p.Category).FirstOrDefault( P => P.Id == id );
             return View(pro);
         }
+
+
+
+        // Header Category Based Product Sort Page
+        public IActionResult CategoryProductPage(int id)
+        {
+            var pro = db.Products.Where(p => p.CategoryId == id && p.IsActive == true).ToList();
+            ViewBag.cat = db.Categorys.FirstOrDefault(c => c.Id == id);
+            return View(pro);
+        }
+
     }
 }
