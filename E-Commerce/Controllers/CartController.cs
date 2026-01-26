@@ -1,6 +1,9 @@
 ﻿using E_Commerce.Migrations;
 using E_Commerce.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+
 
 namespace E_Commerce.Controllers
 {
@@ -20,7 +23,9 @@ namespace E_Commerce.Controllers
         // Main Cart Page
         public IActionResult Index()
         {
-            return View();
+            var cId = HttpContext.Session.GetInt32("CustomerId");
+            var cart = db.Carts.Where(c => c.CustomerId == cId).Include(c => c.Customer).Include(c => c.Product).ThenInclude(p => p.Category).ToList();
+            return View(cart);
         }
 
         // Add To Cart Logic
@@ -57,6 +62,7 @@ namespace E_Commerce.Controllers
 
 
                 db.SaveChanges();
+                TempData["Success"] = product.Name + " product Add To Cart";
                 return RedirectToAction("Index");
             }
             else
