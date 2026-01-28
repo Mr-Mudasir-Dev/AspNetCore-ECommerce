@@ -22,10 +22,17 @@ namespace E_Commerce.Controllers
 
         // Main Cart Page
         public IActionResult Index()
-        {
-            var cId = HttpContext.Session.GetInt32("CustomerId");
-            var cart = db.Carts.Where(c => c.CustomerId == cId).Include(c => c.Customer).Include(c => c.Product).ThenInclude(p => p.Category).ToList();
-            return View(cart);
+        { 
+            if(HttpContext.Session.GetInt32("CustomerId") != null)
+            {
+                var cId = HttpContext.Session.GetInt32("CustomerId");
+                var cart = db.Carts.Where(c => c.CustomerId == cId).Include(c => c.Customer).Include(c => c.Product).ThenInclude(p => p.Category).ToList();
+                return View(cart);
+            }
+            else
+            {
+                return RedirectToAction("Login","Customer");
+            }
         }
 
         // Add To Cart Logic
@@ -70,6 +77,47 @@ namespace E_Commerce.Controllers
                 return RedirectToAction("Login","Customer");
             }
            
+        }
+
+
+        public IActionResult UpdateQty(int cartId, string type)
+        {
+            var cart = db.Carts.Find(cartId);
+
+            if(type == "inc")
+            {
+                cart.Quantity++;
+            }else if(type == "dec")
+            {
+                cart.Quantity--;
+            }
+
+            if(type == "dec" && cart.Quantity == 0)
+            {
+                return RedirectToAction("DeleteToCart", new {id = cart.Id});
+            }
+
+            cart.TotalPrice = cart.Price * cart.Quantity;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+
+        }
+
+
+
+
+        // Delete Cart Record Logic
+        public IActionResult DeleteToCart(int id)
+        {
+            var delete = db.Carts.Find(id);
+            if (delete != null)
+            {
+                db.Carts.Remove(delete);
+                db.SaveChanges();
+            }
+
+            TempData["Success"] = "Item removed from cart";
+            return RedirectToAction("Index");
         }
     }
 }

@@ -7,7 +7,7 @@
 
 @if (TempData["Success"] != null)
 {
-    <div class="alert alert-success alert-dismissible fade show position-fixed top-0 end-0 m-3"
+    <div class="alert alert-success alert-dismissible fade show top-0 end-0 m-3"
          role="alert" id="successAlert">
         @TempData["Success"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -48,29 +48,33 @@
                             <td>
                                 <p class="mb-0 py-4">@c.Price?.ToString("N0")</p>
                             </td>
-                            <td>
-                                <div class="input-group quantity py-4" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0"
-                                           value="@c.Quantity">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
+                            <td class="py-4">
+                                <div class="d-flex align-items-center gap-2">
+
+                                    <form asp-action="UpdateQty" method="post" class="m-0">
+                                        <input type="hidden" name="cartId" value="@c.Id" />
+                                        <input type="hidden" name="type" value="dec" />
+                                        <button class="btn btn-sm btn-outline-secondary rounded-circle">−</button>
+                                    </form>
+
+                                    <span class="fw-bold">@c.Quantity</span>
+
+                                    <form asp-action="UpdateQty" method="post" class="m-0">
+                                        <input type="hidden" name="cartId" value="@c.Id" />
+                                        <input type="hidden" name="type" value="inc" />
+                                        <button class="btn btn-sm btn-outline-secondary rounded-circle">+</button>
+                                    </form>
+
                                 </div>
                             </td>
+
                             <td>
                                 <p class="mb-0 py-4">@c.TotalPrice?.ToString("N0")</p>
                             </td>
                             <td class="py-4">
-                                <button class="btn btn-md rounded-circle bg-light border">
+                                <a href="@Url.Action("DeleteToCart","Cart", new {id = c.Id})" class="btn btn-md rounded-circle bg-light border">
                                     <i class="fa fa-times text-danger"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     }
